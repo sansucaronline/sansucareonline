@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Service Portal - Computer Shop</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 15px;
+        }
+
+        header h1 {
+            color: #1e3a8a;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #4b5563;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: #f9fafb;
+            border: 2px dashed #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Dashboard styles for the shop owner */
+        .dashboard {
+            margin-top: 40px;
+            background: #111827;
+            color: #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            display: none;
+        }
+
+        .dashboard h3 {
+            color: #fff;
+            margin-bottom: 10px;
+            font-family: sans-serif;
+        }
+
+        .submission-card {
+            background: #1f2937;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border-left: 4px solid #10b981;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Digital Service Portal</h1>
+            <p>Submit your details and documents online. We will process your application quickly.</p>
+        </header>
+
+        <form id="applicationForm">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone / WhatsApp Number</label>
+                <input type="tel" id="phone" placeholder="Enter mobile number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Select Online Service Required</label>
+                <select id="service" required>
+                    <option value="">-- Choose a Service --</option>
+                    <option value="Passport Application">Passport Application</option>
+                    <option value="PAN Card Application">PAN Card Application</option>
+                    <option value="Job / Exam Application">Job / Exam Application</option>
+                    <option value="Adhar/ID Update">ID / Document Correction</option>
+                    <option value="Other Online Form">Other Online Form (Specify below)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="documents">Upload Required Documents (PDF or Images)</label>
+                <input type="file" id="documents" multiple required>
+                <small style="color: #6b7280; display:block; margin-top:5px;">You can select multiple files at once.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Additional Notes / Instructions</label>
+                <textarea id="notes" rows="3" placeholder="Any specific instructions for us..."></textarea>
+            </div>
+
+            <button type="submit">Submit Application</button>
+        </form>
+
+        <div class="dashboard" id="shopDashboard">
+            <h3>📥 Shop Owner Dashboard (New Application Received!)</h3>
+            <div class="submission-card" id="outputData"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form values
+            const name = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const service = document.getElementById('service').value;
+            const notes = document.getElementById('notes').value || "None";
+            const fileInput = document.getElementById('documents');
+            
+            // Get file names
+            let fileNames = [];
+            for (let i = 0; i < fileInput.files.length; i++) {
+                fileNames.push(fileInput.files[i].name);
+            }
+
+            // Display in the simulated shop dashboard
+            document.getElementById('outputData').innerHTML = `
+                <strong>Customer:</strong> ${name}<br>
+                <strong>Phone:</strong> ${phone}<br>
+                <strong>Service Requested:</strong> ${service}<br>
+                <strong>Notes:</strong> ${notes}<br>
+                <strong>Uploaded Files:</strong> ${fileNames.join(', ')}
+            `;
+
+            // Show the dashboard section
+            document.getElementById('shopDashboard').style.display = 'block';
+            
+            alert('Application submitted successfully to the shop system!');
+            document.getElementById('applicationForm').reset();
+        });
+    </script>
+
+</body>
+</html>
